@@ -12,8 +12,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.provider.Settings;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 
 public final class PermissionHelper {
@@ -38,31 +40,31 @@ public final class PermissionHelper {
     public static final String CALL_PHONE = Manifest.permission.CALL_PHONE;
 
     public static boolean checkCameraPermission(final Context context) {
-        int cameraPermission = ActivityCompat.checkSelfPermission(context, CAMERA);
-        int storagePermission = ActivityCompat.checkSelfPermission(context, WRITE_STORAGE);
+        int cameraPermission = ContextCompat.checkSelfPermission(context, CAMERA);
+        int storagePermission = ContextCompat.checkSelfPermission(context, WRITE_STORAGE);
         return cameraPermission == PackageManager.PERMISSION_GRANTED && storagePermission == PackageManager.PERMISSION_GRANTED;
     }
 
     public static boolean checkPhonePermission(final Context context) {
-        int callPermission = ActivityCompat.checkSelfPermission(context, CALL_PHONE);
+        int callPermission = ContextCompat.checkSelfPermission(context, CALL_PHONE);
         return callPermission == PackageManager.PERMISSION_GRANTED;
     }
 
-    public static boolean checkFineLocationPermission(final Context context) {
-        int finePermission = ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION);
+    public static boolean checkFineLocationPermission(final Activity activity) {
+        int finePermission = ActivityCompat.checkSelfPermission(activity, ACCESS_FINE_LOCATION);
         return finePermission == PackageManager.PERMISSION_GRANTED;
     }
 
 
     public static boolean checkStoragePermission(final Context context) {
-        int readStorageResult = ActivityCompat.checkSelfPermission(context, READ_STORAGE);
-        int writeStorageResult = ActivityCompat.checkSelfPermission(context, WRITE_STORAGE);
+        int readStorageResult = ContextCompat.checkSelfPermission(context, READ_STORAGE);
+        int writeStorageResult = ContextCompat.checkSelfPermission(context, WRITE_STORAGE);
         return readStorageResult == PackageManager.PERMISSION_GRANTED && writeStorageResult == PackageManager.PERMISSION_GRANTED;
     }
 
     public static boolean checkCorseFinePermission(final Context context) {
-        int corsePermissionResult = ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION);
-        int finePermissionResult = ActivityCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION);
+        int corsePermissionResult = ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION);
+        int finePermissionResult = ContextCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION);
         return corsePermissionResult == PackageManager.PERMISSION_GRANTED && finePermissionResult == PackageManager.PERMISSION_GRANTED;
     }
 

@@ -229,15 +229,8 @@ public class WifiConfigurationPlugin implements MethodCallHandler {
 
 
     private void requestLocationPermission() {
-
-        String []permissions = {Manifest.permission.ACCESS_FINE_LOCATION};
-        if (!PermissionHelper.checkFineLocationPermission(Constant.activity)) {
-            ActivityCompat.requestPermissions(registrar.activity(), permissions, PermissionHelper.FINE_LOCATION_PERMISSION);
-        } else {
-            isLocationPermissionAllowed = true;
-            createLocationRequest();
-
-        }
+        isLocationPermissionAllowed = true;
+        createLocationRequest();
     }
 
 
@@ -368,50 +361,7 @@ public class WifiConfigurationPlugin implements MethodCallHandler {
 
     }
     protected static void createLocationRequest() {
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest);
-
-        SettingsClient client = LocationServices.getSettingsClient(registrar.activity());
-        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
-
-
-
-        task.addOnSuccessListener(registrar.activity(), new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                // ...
-                getWifiData(isLocationPermissionAllowed);
-               /* Toast.makeText(registrar.activity(), "Gps already open",
-                        Toast.LENGTH_LONG).show();*/
-                Log.d("location settings",locationSettingsResponse.toString());
-            }
-        });
-
-        task.addOnFailureListener(registrar.activity(), new OnFailureListener() {
-            @Override
-            public void onFailure( Exception e) {
-                if (e instanceof ResolvableApiException) {
-                    // Location settings are not satisfied, but this can be fixed
-                    // by showing the user a dialog.
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in onActivityResult().
-                        ResolvableApiException resolvable = (ResolvableApiException) e;
-                        resolvable.startResolutionForResult(registrar.activity(),
-                                REQUEST_CHECK_SETTINGS);
-                    } catch (IntentSender.SendIntentException sendEx) {
-                        // Ignore the error.
-                    }
-                }
-            }
-        });
+        getWifiData(isLocationPermissionAllowed);
     }
     /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
